@@ -1,0 +1,121 @@
+<html>
+
+<head>
+    <style>
+        body {
+            text-align: center;
+            background-color: lightgray;
+            margin: 50px auto;
+        }
+
+        button {
+
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 20px;
+            cursor: pointer;
+        }
+    </style>
+    <script type="text/javascript">
+        function validateInput(selectedDate, selectedTime) {
+            if (selectedDate == "") {
+                return "Please select a date";
+            }
+            return "";
+
+        }
+
+        function dateCalculation(selectedDate, selectedTime) {
+
+            var today = new Date();
+            document.getElementById("optionalDate").setAttribute("min", getDateFormat(today));
+            if (typeof selectedDate !== 'undefined') {
+                today = new Date(selectedDate);
+                today.setHours(selectedTime.split(":")[0], selectedTime.split(":")[1], 0, 0);
+
+            }
+            document.getElementById("optionalDate").value = getDateFormat(today);
+            var inputText = "";
+            var day = today.getDay();
+            var daysToAdd = 0;
+            if (3 - day == 0 || 6 - day == 0) {
+
+                var tempdate = new Date();
+                if (typeof selectedDate !== 'undefined') {
+                    tempdate = new Date(selectedDate);
+
+                }
+                tempdate.setHours(20, 0, 0, 0);
+
+                var secs = (tempdate.getTime() - today.getTime()) / 1000;
+
+                if (secs < 0) {
+                    if (3 - day == 0) {
+                        daysToAdd = 3;
+                    } else {
+                        daysToAdd = 4;
+
+                    }
+                }
+            } else if (3 - day > 0) {
+                daysToAdd = 3 - day;
+
+            } else if (6 - day > 0) {
+                daysToAdd = 6 - day;
+
+            }
+
+            inputText = "Next Irish National lottery draw is on " + getNextDate(selectedDate, daysToAdd) + " at 8 PM";
+
+            document.getElementById("displayDate").innerText = inputText;
+
+
+        }
+
+        function getNextDate(selectedDate, daysToAdd) {
+            var nextdate = new Date();
+            if (typeof selectedDate !== 'undefined') {
+                nextdate = new Date(selectedDate);
+            }
+            nextdate.setDate(nextdate.getDate() + daysToAdd);
+            return nextdate.toDateString();
+        }
+
+        function getLotteryDate() {
+            var selectedDate = document.getElementById("optionalDate").value;
+            var selectedTime = document.getElementById("optionalTime").value;
+            dateCalculation(selectedDate, selectedTime);
+        }
+
+        function getDateFormat(selectedDate) {
+
+            return selectedDate.getFullYear() + "-" + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '-' + ('0' +
+                selectedDate.getDate()).slice(-2);
+
+        }
+    </script>
+</head>
+
+<body onload="dateCalculation()">
+
+    <div id="root">
+        <label for="optionalDate">Select Date</label>
+        <input type="date" onload="getDate()" id="optionalDate" />
+        <label for="optionalTime">Enter Time</label>
+        <input type="time" value="00:00" id="optionalTime" />
+        <button onclick="getLotteryDate()">Submit</button>
+        <div id="displayDate">
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>

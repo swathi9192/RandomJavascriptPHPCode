@@ -1,0 +1,117 @@
+<html>
+
+<head>
+    <title>JohnWickBogeyman</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: lightgray;
+            margin: 50px auto;
+        }
+
+        #solutionList {
+            list-style-type: none;
+            padding-left: 0px;
+        }
+
+        button {
+
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 20px;
+            cursor: pointer;
+        }
+
+        table {
+            margin: 0px auto;
+        }
+    </style>
+    <script type="text/javascript">
+        //validates min and max values
+        function validateInput(minValue, maxValue) {
+            if (minValue < 1 || maxValue < 1) {
+                return "Please enter a positive number";
+            }
+            if (minValue > maxValue) {
+                return "Minimum number should be less than maximum number";
+            }
+
+            return "";
+        }
+        //Script for John Wick Bogeyman program
+        function johnWickBogeyman() {
+            var minValue = parseInt(document.getElementById('minValue').value);
+            var maxValue = parseInt(document.getElementById('maxValue').value);
+            var htmlContent = "<ul id = 'solutionList' >";
+            validated = false;
+            var validatedInput = validateInput(minValue, maxValue);
+            if (validatedInput == "") {
+                validated = true;
+            } else {
+                htmlContent = validatedInput;
+            }
+
+            if (validated) {
+                //Iterates min value to max value and checks condition on each number
+                while (minValue <= maxValue) {
+                    //Checks if given number is divisible by both 3 and 5 and prints bogeyman if true
+                    if (minValue % 3 == 0 && minValue % 5 == 0) {
+                        htmlContent += "<li>bogeyman</li>";
+                    }
+                    //checks if given number is divisible by 3 and prints John if true
+                    else if (minValue % 3 == 0) {
+                        htmlContent += "<li>John</li>";
+                    }
+                    //checks if given number is divisible by 3 and prints Wick if true
+                    else if (minValue % 5 == 0) {
+                        htmlContent += "<li>Wick</li>";
+                    }
+                    //Prints number if the above conditions fail
+                    else {
+                        htmlContent += "<li>" + minValue + "</li>";
+                    }
+                    minValue++;
+                }
+            }
+            htmlContent += "</ul>";
+
+            document.getElementById("results").innerHTML = htmlContent;
+        }
+    </script>
+
+</head>
+
+<body onload="johnWickBogeyman()">
+    <div id="root">
+        <h2>
+            John Wick Bogeyman
+        </h2>
+        <h3>Enter the min and max value</h3>
+        <table>
+            <tr>
+                <td><label for="minValue">Minimum value</label></td>
+
+                <td><input type="number" id="minValue" min="1" value="1" /></td>
+            </tr>
+            <tr>
+                <td><label for="maxValue">Maximum value</label></td>
+
+                <td><input type="number" id="maxValue" min="1" value="100" /></td>
+            </tr>
+
+        </table>
+
+        <button onclick="johnWickBogeyman()">Submit</button>
+        <div id="results">
+
+        </div>
+    </div>
+</body>
+
+</html>

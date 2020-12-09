@@ -1,0 +1,88 @@
+<html>
+
+<head>
+    <style>
+        body {
+            text-align: center;
+            background-color: lightgray;
+            margin: 50px auto;
+        }
+
+        #generatedArray,
+        #modifiedArray {
+            width: 70%;
+            overflow-wrap: break-word;
+            margin: 0px auto;
+        }
+
+        button {
+
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 50px;
+            cursor: pointer;
+        }
+    </style>
+    <script type="text/javascript">
+        var arr = [];
+        var arrSum = 0;
+        //Generates a random array of size n with values ranging from min to max
+        function generateRandomArray(min, max, n) {
+
+            arr = Array.from({
+                length: n
+            }, () => getRandInt(min, max));
+            //find sum of array elements before removing element
+            arrSum = arr.reduce((a, b) => a + b, 0);
+        }
+
+        //Returns a radom value between min and max inclusive 
+        function getRandInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        //Prints randomly generated array on screen upon clicking "Generate an array" button
+        function printRandomArray(min, max, n) {
+            generateRandomArray(min, max, n);
+            var htmlContent = "<h3>Generated Array with size : " + arr.length + "</h3><br><div id='generatedArray'>" +
+                arr +
+                "<br/><button id ='removeElementButton' onclick='removeElement()'>Remove element</button>";
+            document.getElementById("root").innerHTML = htmlContent;
+        }
+        //Removes a random element from the generated array
+        function removeElement() {
+            document.getElementById("removeElementButton").style.display = "none";
+            var randInt = getRandInt(1, 500);
+            arr.splice(randInt, 1);
+            findMissingElement();
+        }
+        //Finds missing element from the generated array 
+        function findMissingElement() {
+            var arrSumAfter = arr.reduce((a, b) => a + b, 0);
+            //calculate sum of elements after removing element and subtract that from actual sum
+            var missingElement = arrSum - arrSumAfter;
+            var htmlContent = "<div id = 'removedElement'> <h2>Removed element is " + missingElement +
+                "</h2><br/><h3>New Array with size : " + arr.length + "</h3><br/>" +
+                "<div id='modifiedArray' >" + arr +
+                "</div><br/> <a href='#' onClick='window.location.reload();return false;'>Click here to restart the program</a>";
+            document.getElementById("root").innerHTML += htmlContent;
+        }
+    </script>
+
+</head>
+
+<body>
+    <h2>500 Element Array</h2>
+    <div id="root">
+
+        <button onclick="printRandomArray(1,500,500)">Generate an array</button>
+    </div>
+
+</body>
+
+</html>
